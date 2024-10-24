@@ -2,10 +2,26 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const mongoose = require('mongoose');
+
 // const ruleRoutes = require("./routes/ruleRoutes");
 
 const app = express();
 const PORT = 3000;
+mongoose
+  .connect(
+    "mongodb+srv://adityainpersonal:J4UILWJovkT7uJtI@cluster0.hf4vn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB", err);
+  });
 const CREATE_RULE = require("./routes/createRule");
 const COMBINE_RULE = require("./routes/combineRule");
 const EVALUATE_RULE = require("./routes/evaluateRule");
