@@ -18,7 +18,7 @@ document
     event.preventDefault();
     const ruleName = document.getElementById("ruleName").value;
     const ruleString = document.getElementById("ruleString").value;
-    const response = await fetch("/api/rules/create_rule", {
+    const response = await fetch("/create_rule", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ document
     const rules = Array.from(
       document.querySelectorAll('input[id^="combine-rule"]')
     ).map((input) => input.value);
-    const response = await fetch("/api/rules/combine_rules", {
+    const response = await fetch("/combine_rules", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +57,7 @@ document
     event.preventDefault();
     const ast = document.getElementById("evaluate-ast").value;
     const data = document.getElementById("evaluate-data").value;
-    const response = await fetch("/api/rules/evaluate_rule", {
+    const response = await fetch("/evaluate_rule", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
