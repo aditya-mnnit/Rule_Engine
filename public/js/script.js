@@ -12,6 +12,39 @@ tabs.forEach((tab) => {
   });
 });
 
+function generateTreeHTML(node, prefix = "", isLeft = true) {
+  if (!node) return "";
+
+  let treeHTML = "";
+  treeHTML +=
+    prefix +
+    (isLeft ? "├── " : "└── ") +
+    (node.type === "operator"
+      ? node.operator
+      : `${node.key} ${node.operator} ${node.value}`) +
+    "<br>";
+
+  if (node.left)
+    treeHTML += generateTreeHTML(
+      node.left,
+      prefix + (isLeft ? "│   " : "    "),
+      true
+    );
+  if (node.right)
+    treeHTML += generateTreeHTML(
+      node.right,
+      prefix + (isLeft ? "│   " : "    "),
+      false
+    );
+
+  return treeHTML;
+}
+
+function displayTree(tree) {
+  const treeHTML = generateTreeHTML(tree);
+  document.getElementById("combined-rules-tree").innerHTML = treeHTML;
+}
+
 document
   .getElementById("create-rule-form")
   .addEventListener("submit", async function (event) {
@@ -26,7 +59,9 @@ document
       body: JSON.stringify({ ruleName, ruleString }),
     });
     const result = await response.json();
-    console.log(result);
+    let treeHTML = generateTreeHTML(result.ruleAST);
+    treeHTML += `<br><p>Rule Name: ${result.ruleName}</p>`;
+    document.getElementById("create-rule-result").innerHTML = treeHTML;
   });
 
 // combine
@@ -38,6 +73,10 @@ document
     const rules = Array.from(
       document.querySelectorAll('input[id^="combine-rule"]')
     ).map((input) => input.value);
+    console.log(op);
+    console.log(rules);
+    
+    
     const response = await fetch("/combine_rules", {
       method: "POST",
       headers: {
@@ -48,6 +87,9 @@ document
     const result = await response.json();
     console.log(result);
     
+    let treeHTML = generateTreeHTML(result.ruleAST);
+    treeHTML += `<br><p>Rule Name: ${result.ruleName}</p>`;
+    document.getElementById("combine-rules-result").innerHTML = treeHTML;
   });
 
 // evaluate
@@ -65,5 +107,6 @@ document
       body: JSON.stringify({ ast, data: JSON.parse(data) }),
     });
     const result = await response.json();
-     console.log(result);
+    document.getElementById("evaluate-rule-result").textContent =
+      JSON.stringify(result, null, 2);
   });
