@@ -2,6 +2,9 @@ Got it, here's the updated README with your GitHub repository link:
 
 ---
 
+## Live Website
+
+You can access the live version of the rule engine here: [Rule Engine Live Demo](http://51.20.2.65:3000/)
 # Rule Engine with AST
 
 ## Objective
